@@ -32,3 +32,4 @@ Thumbs.db
 # ============ Reports ============
 reports/*.md
 vista-slam-data.tar.gz
+*.pth
