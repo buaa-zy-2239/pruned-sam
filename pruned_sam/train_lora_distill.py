@@ -25,8 +25,10 @@ import sys
 import time
 import math
 
-sys.path.insert(0, '/home/zhang/vista-slam')
-sys.path.insert(0, '/home/zhang/vista-slam/TinySAM')
+import os as _os
+_BASE = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+sys.path.insert(0, _BASE)
+sys.path.insert(0, _os.path.join(_BASE, 'TinySAM'))
 
 from tinysam.utils.transforms import ResizeLongestSide
 from tinysam.build_sam import sam_model_registry
@@ -326,10 +328,9 @@ def main():
     NUM_EPOCHS = 30
     LEARNING_RATE = 3e-4
     MAX_BOXES = 5
-    SAVE_DIR = '/home/zhang/vista-slam/pruned_sam/weights'
-
-    ANN_FILE = '/home/zhang/vista-slam/eval_data/partial_annotations/instances_val2017.json'
-    IMG_DIR = '/home/zhang/vista-slam/eval_data/test_100'
+    SAVE_DIR = _os.path.join(_BASE, 'pruned_sam/weights')
+    ANN_FILE = _os.path.join(_BASE, 'eval_data/partial_annotations/instances_val2017.json')
+    IMG_DIR = _os.path.join(_BASE, 'eval_data/test_100')
 
     print(f"\n设备: {DEVICE}")
     print(f"LoRA Rank: {LORA_RANK}, Epochs: {NUM_EPOCHS}, LR: {LEARNING_RATE}")
@@ -340,7 +341,7 @@ def main():
 
     print("\n[2/5] 加载 Teacher (TinySAM)...")
     teacher = sam_model_registry['vit_t'](
-        checkpoint='/home/zhang/vista-slam/TinySAM/weights/tinysam_42.3.pth'
+        checkpoint=_os.path.join(_BASE, 'TinySAM/weights/tinysam_42.3.pth')
     )
     teacher.to(DEVICE).eval()
     print(f"  Teacher: {sum(p.numel() for p in teacher.parameters())/1e6:.2f}M params")
@@ -357,7 +358,7 @@ def main():
     from pruned_sam import build_pruned_sam
     student = build_pruned_sam(
         'pruned_m',
-        checkpoint='/home/zhang/vista-slam/pruned_sam/weights/pruned_m.pth'
+        checkpoint=_os.path.join(_BASE, 'pruned_sam/weights/pruned_m.pth')
     )
     student.to(DEVICE)
     student = apply_lora_to_model(student, rank=LORA_RANK)
