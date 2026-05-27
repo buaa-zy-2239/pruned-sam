@@ -1,0 +1,33 @@
+# ============ Large Data ============
+eval_data/
+calib_images/
+
+# ============ Model Weights ============
+pruned_sam/weights/*.pth
+TinySAM/weights/*.pth
+MobileSAM/weights/*.pth
+
+# ============ Exported Models ============
+onnx_models/
+openvino_models/
+
+# ============ Python ============
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# ============ IDE ============
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ============ OS ============
+.DS_Store
+Thumbs.db
+
+# ============ Reports ============
+reports/*.md

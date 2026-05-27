@@ -1,0 +1,30 @@
+{
+  "model": {
+    "model_name": "pruned_sam_acnr_lnq",
+    "model": "./openvino_models/pruned_sam_encoder.xml",
+    "weights": "./openvino_models/pruned_sam_encoder.bin"
+  },
+  "engine": {
+    "type": "accuracy_aware",
+    "params": {
+      "maximal_drop": 0.01,
+      "stat_requests_number": 100,
+      "eval_requests_number": 50
+    }
+  },
+  "dataset": {
+    "name": "calibration_dataset",
+    "data_source": "./calib_images",
+    "annotation": "./calib_annotations.json"
+  },
+  "algorithms": [
+    {
+      "name": "DefaultQuantization",
+      "params": {
+        "target_device": "CPU",
+        "preset": "performance",
+        "stat_subset_size": 300
+      }
+    }
+  ]
+}
