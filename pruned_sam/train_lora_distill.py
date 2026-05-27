@@ -360,8 +360,8 @@ def main():
         'pruned_m',
         checkpoint=_os.path.join(_BASE, 'pruned_sam/weights/pruned_m.pth')
     )
-    student.to(DEVICE)
     student = apply_lora_to_model(student, rank=LORA_RANK)
+    student.to(DEVICE)
 
     lora_params = count_lora_params(student)
     total = sum(p.numel() for p in student.parameters())
