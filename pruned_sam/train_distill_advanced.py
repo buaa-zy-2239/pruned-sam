@@ -222,8 +222,10 @@ def train_epoch(student, teacher, meta, optimizer, device, epoch, total_epochs,
         optimizer.step()
         optimizer.zero_grad()
 
-        for k in total_losses:
-            total_losses[k] += details[k]
+        total_losses['total'] += loss.item()
+        total_losses['mask'] += details['mask']
+        total_losses['feat'] += details['feat']
+        total_losses['iou'] += details['iou']
         pbar.set_postfix({'loss': f"{details['mask']:.4f}"})
 
     n = max(len(meta), 1)
